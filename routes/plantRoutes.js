@@ -8,7 +8,5 @@ const plantController = require('../controllers/plantController');
 router.get('/plants', plantController.getPlants);
 
 
-// Ruta para agregar una nueva planta
-router.post('/addPlant', plantController.addPlant);
 
 module.exports = router;

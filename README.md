@@ -59,3 +59,10 @@ CREATE TABLE DetalleVenta (
     FOREIGN KEY (idProducto) REFERENCES Producto(id)
 );
 
+CREATE TABLE Usuario (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nombre VARCHAR(255),
+    correo VARCHAR(255),
+    contrasena VARCHAR(255)
+);
+
