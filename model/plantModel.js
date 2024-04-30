@@ -1,17 +1,17 @@
-const fs = require('fs');
+require('dotenv').config();
 const path = require('path');
 const { Client } = require('pg');
 
 // Configura la conexión a la base de datos 
 const client = new Client({
-  user: 'root',
-  host: 'dpg-coks4a0l5elc73dfpf7g-a.oregon-postgres.render.com',
-  database: 'tienda_plantas',
-  password: 'x48FiKH1Gg2gdtt07jHdY4GQZEyGyCWK',
-  port: 5432,
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_DATABASE,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
   allowExitOnIdle: true,
   ssl: {
-    rejectUnauthorized: false, // desactiva la verificación del certificado SSL
+    rejectUnauthorized: false, // Desactiva la verificación del certificado SSL
   },
 });
 
