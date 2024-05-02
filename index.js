@@ -1,6 +1,7 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const plantRoutes = require('./routes/plantRoutes');
+const adminRoutes = require('./routes/adminRoutes')
 const cors = require('cors');
 
 const app = express();
@@ -13,6 +14,8 @@ app.use(cors())
 
 // Usar las rutas de las plantas
 app.use('/api', plantRoutes);
+
+app.use('/admin', adminRoutes);
 
 const PORT = process.env.PORT || 3001;
 app.listen(PORT, () => {
