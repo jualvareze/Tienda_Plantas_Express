@@ -1,8 +1,8 @@
-require('dotenv').config();
-const path = require('path');
-const { Client } = require('pg');
+require("dotenv").config();
+const path = require("path");
+const { Client } = require("pg");
 
-// Configura la conexión a la base de datos 
+// Configura la conexión a la base de datos
 const client = new Client({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
@@ -11,35 +11,75 @@ const client = new Client({
   port: process.env.DB_PORT,
   allowExitOnIdle: true,
   ssl: {
-    rejectUnauthorized: false, // Desactiva la verificación del certificado SSL
+    rejectUnauthorized: false,
   },
 });
 
-// Conecta a la base de datos
 client.connect();
 
-
-const getAllPlants = async ()=>{
+//obtener todas las plantas
+const getAllPlants = async () => {
   try {
-    // Ejecuta la consulta SQL para obtener todas las plantas
-    const result = await client.query('SELECT * FROM Producto');
-    return result.rows; // Devuelve las filas obtenidas de la consulta
+    const result = await client.query("SELECT * FROM Producto");
+    return result.rows;
   } catch (error) {
-    console.error('Error al obtener las plantas:', error);
-    throw error; // Re-lanza el error para que el controlador lo maneje
+    console.error("Error al obtener las plantas:", error);
+  }
+};
+
+//guardar planta
+const setPlant = async (nombre, tipo, descripcion, precio) => {
+  try {
+    const consulta =
+      "INSERT INTO Producto (nombre, tipo, descripcion, precio) VALUES ($1, $2, $3, $4)";
+    const values = [nombre, tipo, descripcion, precio];
+    const result = await client.query(consulta, values);
+    return result;
+  } catch (error) {
+    console.error("Error al guardar planta:", error);
+  }
+};
+
+//eliminar planta
+const delPlant = async (id) => {
+  try {
+    const consulta = "DELETE FROM Producto WHERE id = $1";
+    const values = [id];
+    const result = await client.query(consulta, values)
+    return result
+  } catch (error) {
+    console.error('error al eliminar planta', error)
+  }
+};
+
+//editar planta
+const editPlant = async (nombre,tipo,descripcion,precio,id) =>{
+  try {
+    const consulta = "UPDATE Producto SET nombre = $1, tipo = $2, descripcion = $3, precio = $4  WHERE id = $5"
+    const values = [nombre,tipo,descripcion,precio,id]
+    const result = await client.query(consulta, values)
+    return result
+  } catch (error) {
+    console.error('error al actualizar Planta', error)
   }
 }
 
-
-const setPlants = async (id, nombre, tipo, desc, precio) => {
+//obtener plantas por id
+const getPlantForId = async (id) => {
   try {
-    const result =await client.query('')
+    const consulta = "SELECT * FROM producto WHERE id = $1";
+    const values = [id];
+    const { rows } = await client.query(consulta, values);
+    return rows;
   } catch (error) {
-    console.error('Error al guardar planta', error)
+    console.error("Error al obtener planta", error);
   }
-}
-
+};
 
 module.exports = {
-  getAllPlants
+  getAllPlants,
+  getPlantForId,
+  setPlant,
+  delPlant,
+  editPlant
 };

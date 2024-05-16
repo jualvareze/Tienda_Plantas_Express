@@ -25,6 +25,7 @@ const verificarCredenciales = async (email, password) => {
     console.log(rowCount)
     if (!rowCount) throw { code: 404, message: "No se encontró ningún usuario con estas credenciales" }
    }
+
 module.exports = {
   verificarCredenciales,
 };
